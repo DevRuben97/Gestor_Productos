@@ -1,0 +1,53 @@
+{
+    "Users": [{
+        "Id": 1,
+        "Name": "Ruben",
+        "SurName": "Batista",
+        "Email": "alexbatista158@hotmail.com",
+        "Password": "BRILINKRT1257",
+        "State": 1
+    }],
+    "Products": [
+        {
+            "Id": 1,
+            "Name": "Chocolate",
+            "Code": 233434334,
+            "Description": "Barra de chocolate",
+            "Price": 12.99,
+            "Cost": 5.12,
+            "Stock": 8,
+            "Taxed": true,
+            "Category": "Chocolates",
+            "Provider": "Chocolates SA",
+            "State": 1
+        }
+    ],
+    "Outputs": [{
+        "Id": 1,
+        "Date": "24/12/2019",
+        "InvoiceNumber": "23-12223-4",
+        "Amount": 38.97,
+        "Comments": "Se ha vendido unos productos",
+        "UserId": 1
+    }],
+    "OutputDetails":[{
+        "Id": 1,
+        "OutputId": 1,
+        "ProductId": 1,
+        "Quantity": 3
+    }],
+    "Inputs": [{
+        "Id": 1,
+        "Date": "24/12/2019",
+        "InvoiceNumber": "23-12223-4",
+        "Amount": 38.97,
+        "Comments": "Se ha comprado unos productos",
+        "UserId": 1
+    }],
+    "InputDetails": [{
+        "Id": 1,
+        "InputId": 1,
+        "ProductId": 1,
+        "Quantity": 3
+    }]
+}
