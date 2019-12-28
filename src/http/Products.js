@@ -12,3 +12,7 @@ export async function NewProduct(Data){
 export async function EditProduct(Data){
     return await http.put('/Products', Data);
 }
+
+export async function DeleteProduct(id){
+    return await http.delete(`/Products/${id}`)
+}

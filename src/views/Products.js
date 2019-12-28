@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 
 //Functions:
-import {GetProducts} from '../http/Products';
+import {GetProducts, DeleteProduct} from '../http/Products';
 
 //Libreries:
 import Swal from 'sweetalert2';
@@ -23,7 +23,7 @@ const Products= (pros)=>{
 
     useEffect(()=>{
         ProductsList();
-    },[])
+    },[OpenModal])
 
     async function ProductsList(){
 
@@ -33,22 +33,40 @@ const Products= (pros)=>{
             SetLoanding(false);
         },2000)
     }
-    async function DeleteProduct(Product){
+    async function SetDeleteProduct(Product){
         Swal.fire({
             title: `Eliminar Producto`,
             text: `¿Quieres eliminar el producto ${Product.Name}?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, eliminalo'
-        }).then((result)=>{
+        }).then(async (result)=>{
             if (result.value){
                 
-
+            try {
+               
+              let DataResult= await DeleteProduct(Product.Id);
+               if (DataResult.status=== 200){
                 Swal.fire({
                     title: 'Eliminar Producto',
                     text: 'El Producto fue elimnado correctamente',
                     icon: 'success'
                 })
+                await ProductsList()
+               }
+               else{
+                Swal.fire({
+                    title: 'Eliminar Producto',
+                    text: 'Ha ocurrido un error inesperado',
+                    icon: 'error'
+                })
+               }
+             
+            } catch (error) {
+                console.log(error);
+            }    
+
+            
             }
         })
     }
@@ -87,7 +105,7 @@ const Products= (pros)=>{
                         <th>{item.Provider}</th>
                         <th>
                             <button className="btn btn-secondary" onClick={()=> EditProduct(item.Id)}>Editar</button>
-                            <button className="btn btn-danger" onClick={()=> DeleteProduct({Name: item.Name, Id: item.Id})}>Eliminar</button>
+                            <button className="btn btn-danger" onClick={()=> SetDeleteProduct({Name: item.Name, Id: item.id})}>Eliminar</button>
                         </th>
                     </tr>
     
@@ -114,7 +132,7 @@ const Products= (pros)=>{
             {SetTable()}
         </div>
         <Modal open= {OpenModal} onClose={()=> SetOpenModal(false)} center={true} classNames={{modal: 'ModalContenedor'}}>
-                <FrmProduct IsEdit= {FrmEdit}></FrmProduct>
+                <FrmProduct IsEdit= {FrmEdit} SetOpenModal={SetOpenModal}></FrmProduct>
             </Modal>
         </div>
     )

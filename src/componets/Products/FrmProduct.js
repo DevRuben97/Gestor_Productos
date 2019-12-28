@@ -10,16 +10,12 @@ import {GenerateRandonCode} from '../../helpers/Generic';
 import {NewProduct, EditProduct} from '../../http/Products';
 
 
-//Componets:
-import {Spinner} from 'react-activity';
-import 'react-activity/dist/react-activity.css';
-
-export default function FrmProduct({IsEdit, Data}){
+export default function FrmProduct({IsEdit, Data, SetOpenModal}){
     
     //States:
     //Products Variables:
    const [Product, SetProduct]= useState({
-    Id: 0,
+    id: 0,
     Name: '',
     Code: GenerateRandonCode(8),
     Description: '',
@@ -31,11 +27,6 @@ export default function FrmProduct({IsEdit, Data}){
     Provider: '',
     State: 1
    })
-    //Loading variables:
-    const [IsLoading, SetLoading]= useState(false);
-
-    
-
 
     //Constantes:
     const Tilte= IsEdit? 'Editar Producto': 'Nuevo Producto'
@@ -43,30 +34,34 @@ export default function FrmProduct({IsEdit, Data}){
 
     async function SaveProduct(values){
 
-        let Result;
-        if (!IsEdit){
-            Result = await NewProduct(values);
-        }
-        else{
-            Result= await EditProduct(values);
-        }
+        try {
+            let Result;
+            if (!IsEdit) {
+              Result = await NewProduct(values);
+            } else {
+              Result = await EditProduct(values);
+            }
 
-        if (Result.status=== 200){
-         
-            Swal.fire({
-                title: IsEdit? 'Editar Producto': 'Nuevo Producto',
-                text: IsEdit? 'El Producto fue editado correctamente': 'El Producto fue creado correctamente',
-                icon: 'success'
-            }).then(()=>{
-
-            })
-        }
-        else{
-            Swal.fire({
-                title: 'Error',
-                text: 'Ha ocurrido un error inesperado',
-                icon: 'error'
-            })
+            if (Result.status === 201) {
+              Swal.fire({
+                title: IsEdit ? "Editar Producto" : "Nuevo Producto",
+                text: IsEdit
+                  ? "El Producto fue editado correctamente"
+                  : "El Producto fue creado correctamente",
+                icon: "success"
+              }).then(() => {
+                SetOpenModal(false);
+              });
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: "Ha ocurrido un error inesperado",
+                icon: "error"
+              });
+            }
+        } 
+        catch (error) {
+         console.log(error);   
         }
 
     }
