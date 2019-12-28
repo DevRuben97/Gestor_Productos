@@ -9,7 +9,8 @@ import Modal from 'react-responsive-modal';
 
 //Componets:
 import Table from '../componets/Table';
-import Spinner from '../componets/Spinner';
+import {Spinner} from 'react-activity';
+import 'react-activity/dist/react-activity.css';
 import FrmProduct from '../componets/Products/FrmProduct';
 
 const Products= (pros)=>{
@@ -55,15 +56,23 @@ const Products= (pros)=>{
         SetFrmEdit(true);
         SetOpenModal(true);
     }
-      function NewProduct(){
+     async function NewProduct(){
         SetOpenModal(true);
+
+    }
+
+    async function FilterProducts(){
 
     }
 
     function SetTable(){
 
         if (IsLoanding){
-            return (<Spinner></Spinner>)
+            return (
+                <div className="container" style={{width: '5%'}}>
+                    <Spinner color="#727981" size={32} speed={1} animating={true} />
+                </div>
+            )
         }else{
             return (
                 <Table 
@@ -94,7 +103,7 @@ const Products= (pros)=>{
             <div className="row">
                 <div className="col-md-9">
                     <label>Buscar productos</label>
-                    <input type="text" className="form-control" style={{width: '50%'}} placeholder="Buscar por Nombre"></input>
+                    <input type="text" className="form-control" style={{width: '50%'}} placeholder="Buscar por Nombre" onChange={(e)=> FilterProducts(e.target.value)}></input>
                 </div>
                 <div className="col-md-3">
                     <br/>

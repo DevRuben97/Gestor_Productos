@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 
 
+//Librelies
+import Swal from 'sweetalert2';
+
 //Functions
 import {GenerateRandonCode} from '../../helpers/Generic';
+import {NewProduct, EditProduct} from '../../http/Products';
 
+
+//Componets:
+import {Spinner} from 'react-activity';
+import 'react-activity/dist/react-activity.css';
 
 export default function FrmProduct({IsEdit, Data}){
     
     //States:
+    //Products Variables:
     const [Id, SetProductId]= useState(0);
     const [Name, SetProductName]= useState('');
     const [Code, SetCode]= useState(GenerateRandonCode(8))
@@ -21,6 +30,9 @@ export default function FrmProduct({IsEdit, Data}){
     const [State, SetState]= useState(1);
 
 
+    //Loading variables:
+    const [IsLoading, SetLoading]= useState(false);
+
 
     //Constantes:
     const Tilte= IsEdit? 'Editar Producto': 'Nuevo Producto'
@@ -28,7 +40,46 @@ export default function FrmProduct({IsEdit, Data}){
 
     async function SaveProduct(e){
         e.preventDefault();
-        alert('hola');
+        const Product= {
+            Id,
+            Name,
+            Code,
+            Description,
+            Price,
+            Cost,
+            Stock,
+            Taxed,
+            Category,
+            Provider,
+            State
+        }
+
+        let Result;
+        if (!IsEdit){
+            Result = await NewProduct(Data);
+        }
+        else{
+            Result= await EditProduct(Data);
+        }
+
+        if (Result.status=== 200){
+         
+            Swal.fire({
+                title: IsEdit? 'Editar Producto': 'Nuevo Producto',
+                text: IsEdit? 'El Producto fue editado correctamente': 'El Producto fue creado correctamente',
+                icon: 'success'
+            }).then(()=>{
+
+            })
+        }
+        else{
+            Swal.fire({
+                title: 'Error',
+                text: 'Ha ocurrido un error inesperado',
+                icon: 'error'
+            })
+        }
+
     }
     return (
         <form>
@@ -58,8 +109,8 @@ export default function FrmProduct({IsEdit, Data}){
                     <div className="row">
                         <div className="col-md-5">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1"></input>
-                            <label class="custom-control-label" for="customCheck1" onChange={e=> SetTaxed(e.target.value)}>Producto Gravable</label>
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" onClick={e=> SetTaxed(e.target.checked)}></input>
+                            <label class="custom-control-label" for="customCheck1" >Producto Gravable</label>
                             </div>
                         </div>
                         <div className="col-md-5">
