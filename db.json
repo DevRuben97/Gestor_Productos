@@ -38,6 +38,19 @@
       "Provider": "OMDOC",
       "State": 1,
       "id": 2
+    },
+    {
+      "id": 3,
+      "Name": "CocaCola",
+      "Code": "828262388",
+      "Description": "Refresco de doble litro",
+      "Price": "1200",
+      "Cost": "800",
+      "Stock": 0,
+      "Taxed": true,
+      "Category": "Refrescos",
+      "Provider": "CocaCola",
+      "State": 1
     }
   ],
   "Outputs": [

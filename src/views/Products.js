@@ -13,6 +13,8 @@ import {Spinner} from 'react-activity';
 import 'react-activity/dist/react-activity.css';
 import FrmProduct from '../componets/Products/FrmProduct';
 
+let numeral= require('numeral');
+
 const Products= (pros)=>{
 
 
@@ -99,8 +101,8 @@ const Products= (pros)=>{
                     <tr key={index}>
                         <th>{item.Name}</th>
                         <th>{item.Code}</th>
-                        <th>${item.Price}</th>
-                        <th>${item.Cost}</th>
+                        <th>${numeral(item.Price).format(0,0)}</th>
+                        <th>${numeral(item.Cost).format(0,0)}</th>
                         <th>{item.Stock}</th>
                         <th>{item.Provider}</th>
                         <th>
