@@ -15,7 +15,7 @@
       "Name": "Chocolate",
       "Code": 233434334,
       "Description": "Barra de chocolate",
-      "Price": 12.99,
+      "Price": "1,3000",
       "Cost": 5.12,
       "Stock": 8,
       "Taxed": true,
@@ -28,7 +28,7 @@
       "Name": "Producto de Prueba",
       "Code": "839456778",
       "Description": "dpofppmd",
-      "Price": 12,
+      "Price": "5000",
       "Cost": 56,
       "Stock": 0,
       "Taxed": [

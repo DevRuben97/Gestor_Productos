@@ -19,6 +19,7 @@ const Products= (pros)=>{
 
 
     const [Products, SetProducts]= useState([]);
+    const [ProductEditId, SetProductId]= useState(0);
     const [OpenModal, SetOpenModal]= useState(false);
     const [IsLoanding, SetLoanding]= useState(true);
     const [FrmEdit, SetFrmEdit]= useState(false);
@@ -73,8 +74,10 @@ const Products= (pros)=>{
         })
     }
     async function EditProduct(ProductId){
-        SetFrmEdit(true);
-        SetOpenModal(true);
+
+        SetProductId(ProductId);
+            SetFrmEdit(true);
+            SetOpenModal(true);
     }
      async function NewProduct(){
         SetOpenModal(true);
@@ -106,7 +109,7 @@ const Products= (pros)=>{
                         <th>{item.Stock}</th>
                         <th>{item.Provider}</th>
                         <th>
-                            <button className="btn btn-secondary" onClick={()=> EditProduct(item.Id)}>Editar</button>
+                            <button className="btn btn-secondary" onClick={()=> EditProduct(item.id)}>Editar</button>
                             <button className="btn btn-danger" onClick={()=> SetDeleteProduct({Name: item.Name, Id: item.id})}>Eliminar</button>
                         </th>
                     </tr>
@@ -131,10 +134,14 @@ const Products= (pros)=>{
                 </div>
             </div>
             <br/>
-            {SetTable()}
+            <div className="card">
+                <div className="card-body">
+                {SetTable()}
+                </div>
+            </div>
         </div>
         <Modal open= {OpenModal} onClose={()=> SetOpenModal(false)} center={true} classNames={{modal: 'ModalContenedor'}}>
-                <FrmProduct IsEdit= {FrmEdit} SetOpenModal={SetOpenModal}></FrmProduct>
+                <FrmProduct IsEdit= {FrmEdit} ProductId= {ProductEditId} SetOpenModal={SetOpenModal}></FrmProduct>
             </Modal>
         </div>
     )

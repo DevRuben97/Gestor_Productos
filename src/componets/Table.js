@@ -7,7 +7,7 @@ const Table= (props)=> {
     const {Body}= props;
     return (
         <table className="table table-hover">
-            <thead className="bg-blue">
+            <thead className="TableHead">
                 <tr>
                 {Titles.map((title,index)=> (
                     <th key= {index}>{title}</th>    

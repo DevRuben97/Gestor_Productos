@@ -8,3 +8,7 @@
     font-size: small;
     color: #FF0039;
   }
+  .TableHead{
+    background-color: rgb(39, 128, 227);
+    color: white;
+  }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Formik} from 'formik';
 
 
@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 //Functions
 import {GenerateRandonCode} from '../../helpers/Generic';
-import {NewProduct, EditProduct} from '../../http/Products';
+import {NewProduct,GetProductById, EditProduct} from '../../http/Products';
 
 //Validationss:
 import {PRODUCT_SCHEMA} from '../../helpers/formValidations';
@@ -15,7 +15,7 @@ import {PRODUCT_SCHEMA} from '../../helpers/formValidations';
 
 let numeral= require('numeral');
 
-export default function FrmProduct({IsEdit, Data, SetOpenModal}){
+export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
     
     //States:
     //Products Variables:
@@ -33,6 +33,23 @@ export default function FrmProduct({IsEdit, Data, SetOpenModal}){
     State: 1
    })
 
+   useEffect(()=>{
+
+       if (IsEdit && ProductId!==0){
+           async function EditProduct(){
+            try {
+                const {data} = await GetProductById(ProductId);
+                SetProduct(data);
+                
+               } catch (error) {
+                   console.log(error);
+               }
+           }
+           EditProduct();
+
+            
+       }
+   },[])
    
     //Constantes:
     const Tilte= IsEdit? 'Editar Producto': 'Nuevo Producto'
@@ -49,7 +66,8 @@ export default function FrmProduct({IsEdit, Data, SetOpenModal}){
               Result = await EditProduct(values);
             }
 
-            if (Result.status === 201) {
+            let status= Result.status
+            if (status === 201 || status=== 200) {
               Swal.fire({
                 title: IsEdit ? "Editar Producto" : "Nuevo Producto",
                 text: IsEdit
@@ -78,6 +96,7 @@ export default function FrmProduct({IsEdit, Data, SetOpenModal}){
             initialValues= {Product}
             onSubmit={async (values)=> await SaveProduct(values)}
             validateOnBlur= {true}
+            enableReinitialize
             validationSchema= {PRODUCT_SCHEMA}
             >
             {({handleSubmit, handleChange,values,errors})=>(
