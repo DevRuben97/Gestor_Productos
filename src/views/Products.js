@@ -19,6 +19,7 @@ const Products= (pros)=>{
 
 
     const [Products, SetProducts]= useState([]);
+    const [Filter, setFilter]= useState([]);
     const [ProductEditId, SetProductId]= useState(0);
     const [OpenModal, SetOpenModal]= useState(false);
     const [IsLoanding, SetLoanding]= useState(true);
@@ -32,6 +33,7 @@ const Products= (pros)=>{
 
         let {data}= await GetProducts();
         SetProducts(data);
+        setFilter(data);
         setTimeout(()=>{
             SetLoanding(false);
         },2000)
@@ -79,13 +81,11 @@ const Products= (pros)=>{
             SetFrmEdit(true);
             SetOpenModal(true);
     }
-     async function NewProduct(){
-        SetOpenModal(true);
 
-    }
-
-    async function FilterProducts(){
-
+    async function FilterProducts(ProductName){
+        let products = Products.filter(x=> x.Name.includes(ProductName));
+        setFilter(products);
+        
     }
 
     function SetTable(){
@@ -97,10 +97,16 @@ const Products= (pros)=>{
                 </div>
             )
         }else{
-            return (
-                <Table 
+            if (Filter.length===0){
+                return (
+                    <p className="text-center">No hay registros para mostrar</p>
+                )
+            }
+            else{
+                return (
+                    <Table 
                 Titles={['Nombre', 'Codigo','Precio', 'Costo', 'Stock', 'Proveedor','Acciones']}
-                Body={Products.map((item,index)=>(
+                Body={Filter.map((item,index)=>(
                     <tr key={index}>
                         <th>{item.Name}</th>
                         <th>{item.Code}</th>
@@ -116,7 +122,8 @@ const Products= (pros)=>{
     
                 ))}
                 />
-            )
+                )
+            }
         }
     }
     return (
@@ -130,7 +137,7 @@ const Products= (pros)=>{
                 </div>
                 <div className="col-md-3">
                     <br/>
-                    <button className="btn btn-primary" onClick={NewProduct} style={{position: 'relative'}}>Nuevo Producto</button>
+                    <button className="btn btn-primary" onClick={()=> SetOpenModal(true)} style={{position: 'relative'}}>Nuevo Producto</button>
                 </div>
             </div>
             <br/>
