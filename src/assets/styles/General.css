@@ -12,3 +12,13 @@
     background-color: rgb(39, 128, 227);
     color: white;
   }
+  .card-icon-container{
+    font-size: 40px;
+  }
+  .CardBoxAnimation{
+    transition: 1s !important;
+    
+  }
+  .CardBoxAnimation:hover{
+    transform: scale(1.1) !important;
+  }
