@@ -9,13 +9,13 @@ export default function Card({ title, value, action, color, icon }) {
                 <i className={icon}></i>
             </div>
             <div className="col">
-            <h5 className="card-title">{title}</h5>
+            <h5>{title}</h5>
             <p  style={{fontWeight: 'bold', fontSize: '24px', marginBottom: '0'}}>{value}</p>
             </div>
         </div>
       </div>
-        <div>
-        <label style={{textAlign: 'center', paddingLeft: '30px'}}>Click para mas información <i class="fas fa-arrow-right"></i></label>
+        <div style={{textAlign: 'center'}}>
+          <label>Click para mas información <i class="fas fa-arrow-right"></i></label>
         </div>
     </div>
   );
