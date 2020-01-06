@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 //Componets
 import HeaderMenu from '../componets/Header';
 
-//Views
-import Dashboard from '../views/Dashboard';
-import Products from '../views/Products';
-import Login from '../views/Login';
-
+import {Routes, Routeswithoutlogin} from '../Routes';
+import { bool } from 'yup';
 
 
 function App() {
+
+
+  const [islogged, setLogin]= useState(false);
+
+
+  useEffect(()=>{
+    CheckInitial();
+  }, [])
+
+  function CheckInitial(){
+
+    setLogin(localStorage.getItem("logged"));
+
+  }
+
   return (
     <Router>
-      <HeaderMenu></HeaderMenu>
-      <main className="mt-5">
+      {islogged? <HeaderMenu/>: null}
       <Switch>
-        <Route path='/' exact component={Dashboard}></Route>
-        <Route path='/Products' exact component={Products}></Route>
-        <Route path='/Login' exact component={Login}></Route>
+       {islogged? Routes.map((data,index)=>(
+         <Route path={data.path} exact={data.exact} component={data.main} key= {index}/>
+       )): Routeswithoutlogin.map((data,index)=>(
+        <Route path={data.path} exact={data.exact} component={data.main} key={index}/>
+       ))}
       </Switch>
-      </main>
     </Router>
   );
 }
