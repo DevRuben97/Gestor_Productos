@@ -4,7 +4,7 @@ import './assets/styles/index.css';
 import './assets/styles/bootstrap.min.css';
 import './assets/styles/General.css';
 import '@fortawesome/fontawesome-free/js/all'
-import App from './componets/App';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Formik } from "formik";
 import {USER_LOGIN_SCHEMA} from '../helpers/formValidations';
+import Auth from "../lib/AuthContext";
 
 const Login = props => {
+  const {setLogged} = useContext(Auth)
+
   const [UserLogin, setLogin] = useState({
     user: "",
     password: ""
   });
 
-  function Login(value) {
+  function LoginUser(value) {
+    setLogged(true)
       localStorage.setItem('logged','true');
       
   }
@@ -24,7 +28,7 @@ const Login = props => {
               <div className="col">
                 <Formik
                   initialValues={UserLogin}
-                  onSubmit={values => Login(values)}
+                  onSubmit={values => LoginUser(values)}
                   validationSchema={USER_LOGIN_SCHEMA}
                 >
                   {({ handleSubmit, handleChange, values, errors }) => (
