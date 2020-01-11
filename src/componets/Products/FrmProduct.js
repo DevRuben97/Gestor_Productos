@@ -20,7 +20,7 @@ export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
     //States:
     //Products Variables:
    const [Product, SetProduct]= useState({
-    id: 0,
+    Id: 0,
     Name: '',
     Code: GenerateRandonCode(8),
     Description: '',
@@ -30,7 +30,7 @@ export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
     Taxed: false,
     Category: '',
     Provider: '',
-    State: 1
+    State: 0
    })
 
    useEffect(()=>{
@@ -39,7 +39,7 @@ export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
            async function EditProduct(){
             try {
                 const {data} = await GetProductById(ProductId);
-                SetProduct(data);
+                SetProduct(data.Data);
                 
                } catch (error) {
                    console.log(error);
@@ -65,9 +65,10 @@ export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
             } else {
               Result = await EditProduct(values);
             }
-
-            let status= Result.status
-            if (status === 201 || status=== 200) {
+            console.log(Result);
+            const {data}= Result
+            console.log(data);
+            if (data.OperationSuccess) {
               Swal.fire({
                 title: IsEdit ? "Editar Producto" : "Nuevo Producto",
                 text: IsEdit
@@ -80,7 +81,7 @@ export default function FrmProduct({IsEdit, ProductId, SetOpenModal}){
             } else {
               Swal.fire({
                 title: "Error",
-                text: "Ha ocurrido un error inesperado",
+                text: data.Message,
                 icon: "error"
               });
             }

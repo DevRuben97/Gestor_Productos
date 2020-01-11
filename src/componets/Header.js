@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink, Link} from 'react-router-dom';
 
-const HeaderMenu= (props)=> {
+const HeaderMenu= ({SinOut})=> {
 
     return (
       

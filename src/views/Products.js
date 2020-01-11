@@ -30,8 +30,8 @@ const Products = pros => {
 
   async function ProductsList() {
     let { data } = await GetProducts();
-    SetProducts(data);
-    setFilter(data);
+    SetProducts(data.Data);
+    setFilter(data.Data);
     setTimeout(() => {
       SetLoanding(false);
     }, 2000);
@@ -114,7 +114,7 @@ const Products = pros => {
                       data-tip="Editar el producto"
                       className="btn btn-secondary"
                       href="#"
-                      onClick={() => EditProduct(item.id)}
+                      onClick={() => EditProduct(item.Id)}
                     >
                       <i class="fas fa-edit"></i>
                     </a>
@@ -123,7 +123,7 @@ const Products = pros => {
                       className="btn btn-danger"
                       href="#"
                       onClick={() =>
-                        SetDeleteProduct({ Name: item.Name, Id: item.id })
+                        SetDeleteProduct({ Name: item.Name, Id: item.Id })
                       }
                     >
                       <i class="fas fa-trash-alt"></i>
