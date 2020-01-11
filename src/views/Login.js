@@ -1,19 +1,38 @@
 import React, { useState,useContext } from "react";
 import { Formik } from "formik";
 import {USER_LOGIN_SCHEMA} from '../helpers/formValidations';
-import Auth from "../lib/AuthContext";
+import Auth from "../Context/AuthContext";
+import UserInfo from '../Context/UserContext';
+import { login } from "../http/Auth";
+import Swal from "sweetalert2";
 
 const Login = props => {
   const {setLogged} = useContext(Auth)
+  const {SetUser}= useContext(UserInfo);
 
   const [UserLogin, setLogin] = useState({
-    user: "",
-    password: ""
+    Email: "",
+    Password: ""
   });
+  
 
-  function LoginUser(value) {
-    setLogged(true)
+ async function LoginUser(value) {
+
+    const {data}= await login(value);
+
+    if (data.OperationSuccess){
+      SetUser(data.Data)
       localStorage.setItem('logged','true');
+      setLogged(true);
+    }
+    else{
+      Swal.fire({
+        icon: 'error',
+        text: data.Message,
+        title: 'Iniciar Sessión'
+      })
+    }
+
       
   }
 
@@ -38,23 +57,23 @@ const Login = props => {
                         type="text"
                         className="form-control"
                         placeholder="tucorreo@ejemplo.com"
-                        onChange={handleChange('user')}
+                        onChange={handleChange('Email')}
                       />
-                      <label className="ValidatetionError">{errors.user}</label>
+                      <label className="ValidatetionError">{errors.Email}</label>
                       <br />
                       <label>Contraseña</label>
                       <input
                         type="password"
                         className="form-control"
                         placeholder="Ingrese su contraseña"
-                        onChange={handleChange('password')}
+                        onChange={handleChange('Password')}
                       />
-                      <label className="ValidatetionError">{errors.password}</label>
+                      <label className="ValidatetionError">{errors.Password}</label>
                       <br />
                       <button 
                       className="btn btn-primary btn-lg btn-block" 
                       type="submit"
-                      disabled={values.user=== ''|| values.password===''}
+                      disabled={values.Email=== ''|| values.Password===''}
                       >
                         <i class="fas fa-arrow-circle-right"></i> Iniciar Sessión
                       </button>

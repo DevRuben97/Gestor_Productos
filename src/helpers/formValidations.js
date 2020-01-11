@@ -10,6 +10,6 @@ export const PRODUCT_SCHEMA= yup.object().shape({
 })
 
 export const USER_LOGIN_SCHEMA= yup.object().shape({
-    user: yup.string().email('Ingresa un correo electronico valido'),
-    password: yup.string().required('La contraseña es requerida')
+    Email: yup.string().email('Ingresa un correo electronico valido'),
+    Password: yup.string().required('La contraseña es requerida')
 })
