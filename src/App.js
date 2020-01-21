@@ -20,6 +20,9 @@ function App() {
 
   function CheckInitial() {
     setLogged(localStorage.getItem("logged"));
+    if (localStorage.getItem('logged')=== 'true'){
+      SetUser(JSON.parse(localStorage.getItem('User')))
+    }
   }
   function Loginout(){
     localStorage.setItem('logged','false');

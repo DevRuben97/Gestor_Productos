@@ -22,6 +22,7 @@ const Login = props => {
 
     if (data.OperationSuccess){
       SetUser(data.Data)
+      localStorage.setItem("User",JSON.stringify(data.Data));
       localStorage.setItem('logged','true');
       setLogged(true);
     }
