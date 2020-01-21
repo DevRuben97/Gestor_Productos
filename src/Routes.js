@@ -4,6 +4,7 @@ import React from 'react';
 import Dashboard from './views/Dashboard';
 import Products from './views/Products';
 import Login from './views/Login';
+import UserProfile from './views/UserProfile';
 
 
 export const Routes= [
@@ -16,6 +17,11 @@ export const Routes= [
         path: '/Products',
         exact: false,
         main: ()=> <Products/>
+    },
+    {
+        path: '/UserProfile',
+        exact: false,
+        main: ()=> <UserProfile/>
     }
 ]
 
