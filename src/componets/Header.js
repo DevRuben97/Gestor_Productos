@@ -28,6 +28,8 @@ const HeaderMenu = ({ LoginOut }) => {
           <DropDownMenu
           Show= {ShowUserMenu}
           Links={UserMenuRoutes}
+          Close={SetUserMenu}
+          LoginOut={LoginOut}
           />
         </div>
       </div>

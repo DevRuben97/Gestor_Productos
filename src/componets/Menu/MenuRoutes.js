@@ -17,5 +17,11 @@ export const UserMenuRoutes=[
         ClassName: 'dropdown-item',
         icon: 'fas fa-user',
         title: 'Perfil'
+    },
+    {
+        to: '/LoginOut',
+        ClassName: 'dropdown-item',
+        icon: 'fas fa-sign-out-alt',
+        title: 'Cerrar Cesión'
     }
 ]

@@ -26,6 +26,8 @@ function App() {
   }
   function Loginout(){
     localStorage.setItem('logged','false');
+    localStorage.setItem("User",JSON.stringify({}));
+    SetUser({});
     setLogged(false);
   }
 
