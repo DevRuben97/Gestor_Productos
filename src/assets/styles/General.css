@@ -25,14 +25,18 @@
 
 div.Login{
   background-color: rgb(39, 128, 227) !important;
+  background-image: url('../Images//login_background_image.jpg');
+  background-size: auto 120%;
+  background-repeat: no-repeat;
   position: absolute;
   height: 100%;
   width: 100%;
 }
 div.login-container{
   width: 400px;
-  height: auto;
-  margin: 0 auto 200px;
+  height: 300px;
+  margin: 120px auto;
+  opacity: 0.8;
 }
 .card-body-border{
  border-radius: 13px;

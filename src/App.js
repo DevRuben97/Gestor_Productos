@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HeaderMenu from "./componets/Header";
 
 import { Routes, Routeswithoutlogin } from "./Routes";
-import { bool } from "yup";
+import { bool, boolean } from "yup";
 
 import Auth from "./Context/AuthContext";
 import UserInfo from './Context/UserContext';
@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   function CheckInitial() {
-    setLogged(localStorage.getItem("logged"));
+    setLogged((localStorage.getItem("logged")==='true'));
     if (localStorage.getItem('logged')=== 'true'){
       SetUser(JSON.parse(localStorage.getItem('User')))
     }
