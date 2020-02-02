@@ -4,7 +4,7 @@ import { NavLink, Link } from "react-router-dom";
 
 export default function MenuContainer(props) {
   return (
-    <ul className="navbar-nav mr-auto">
+    <ul className="navbar-nav mr-auto MenuContainer">
       {Routes.map((item, index) => (
         <li className="nav-item">
           <NavLink

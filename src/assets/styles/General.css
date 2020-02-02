@@ -41,3 +41,11 @@ div.login-container{
 .card-body-border{
  border-radius: 13px;
 }
+
+.MenuContainer{
+  display: inline-flex !important;
+  flex-direction: row !important;
+}
+.MenuItem{
+  padding-right: 14px !important;
+}

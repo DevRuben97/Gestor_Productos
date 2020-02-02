@@ -5,7 +5,7 @@ import Dashboard from './views/Dashboard';
 import Products from './views/Products';
 import Login from './views/Login';
 import UserProfile from './views/UserProfile';
-
+import ProductMovements from './views/ProductMovements'
 
 export const Routes= [
     {
@@ -22,6 +22,11 @@ export const Routes= [
         path: '/UserProfile',
         exact: false,
         main: ()=> <UserProfile/>
+    },
+    {
+        path: '/ProductMovements',
+        exact: false,
+        main: ()=> <ProductMovements/>
     }
 ]
 

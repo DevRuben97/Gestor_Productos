@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 //Functions:
 import { GetProducts, DeleteProduct } from "../http/Products";
@@ -139,7 +139,7 @@ const Products = pros => {
     }
   }
   return (
-    <div>
+    <Fragment>
       <div className="container">
         <h2 className="text-center"><i class="fas fa-warehouse"></i> Listado de Productos</h2>
         <div className="row">
@@ -181,7 +181,7 @@ const Products = pros => {
           SetOpenModal={SetOpenModal}
         ></FrmProduct>
       </Modal>
-    </div>
+    </Fragment>
   );
 };
 
