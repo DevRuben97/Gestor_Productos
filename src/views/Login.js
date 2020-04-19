@@ -33,7 +33,6 @@ const Login = props => {
         title: 'Iniciar Sessión'
       })
     }
-
       
   }
 

@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react';
-
+import React, { Fragment, useState, useEffect } from 'react';
 
 //Libreries:
 import Swal from "sweetalert2";
@@ -11,7 +10,11 @@ import { Spinner } from "react-activity";
 import "react-activity/dist/react-activity.css";
 import ReactTooltip from "react-tooltip";
 
+//Data functions:
+import {getMovements} from '../http/Movements';
+
 let numeral = require('numeral');
+
 
 
 export default function ProductMovements(props){
@@ -20,9 +23,23 @@ export default function ProductMovements(props){
   const [Filter, setFilter] = useState([]);
   const [MovementId, SetMovementId] = useState(0);
   const [OpenModal, SetOpenModal] = useState(false);
-  const [IsLoanding, SetLoanding] = useState(true);
+  const [IsLoanding, SetLoanding] = useState(false);
   const [FrmEdit, SetFrmEdit] = useState(false);
 
+
+
+  useEffect(()=>{
+    FechData();
+  },[])
+
+
+  async function FechData(){
+    SetLoanding(true);
+    const {data}= await getMovements();
+    SetMovements(data.Data);
+    setFilter(data.Data);
+    SetLoanding(false);
+  }
 
    function FilterMovements(){
 
@@ -50,15 +67,17 @@ export default function ProductMovements(props){
                     "Monto",
                     "Comentarios",
                     "Responsable",
+                    "Tipo",
+                    "Acciones"
                   ]}
                   Body={Filter.map((item, index) => (
                     <tr key={index}>
-                      <th>{item.Name}</th>
-                      <th>{item.Code}</th>
-                      <th>${numeral(item.Price).format(0, 0)}</th>
-                      <th>${numeral(item.Cost).format(0, 0)}</th>
-                      <th>{item.Stock}</th>
-                      <th>{item.Provider}</th>
+                      <th>{item.Invoice}</th>
+                      <th>{item.Date}</th>
+                      <th>${numeral(item.Amount).format(0, 0)}</th>
+                      <th>{item.Comments}</th>
+                      <th>{item.User}</th>
+                      <th>{item.Type}</th>
                       <th>
                         <a
                           data-tip="Editar el producto"
