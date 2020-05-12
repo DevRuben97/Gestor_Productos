@@ -6,6 +6,7 @@ import Products from './views/Products';
 import Login from './views/Login';
 import UserProfile from './views/UserProfile';
 import ProductMovements from './views/ProductMovements'
+import FrmMovement from './views/FrmMovement';
 
 export const Routes= [
     {
@@ -27,6 +28,11 @@ export const Routes= [
         path: '/ProductMovements',
         exact: false,
         main: ()=> <ProductMovements/>
+    },
+    {
+        path: '/AddMovement',
+        exact: false,
+        main: ()=> <FrmMovement/>
     }
 ]
 

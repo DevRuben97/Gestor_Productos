@@ -1,10 +1,9 @@
 import React from 'react';
 
 
-const Table= (props)=> {
+const Table= ({Titles, Body})=> {
 
-    const {Titles}= props;
-    const {Body}= props;
+
     return (
         <table className="table table-hover">
             <thead className="TableHead">

@@ -17,7 +17,7 @@ let numeral = require('numeral');
 
 
 
-export default function ProductMovements(props){
+export default function ProductMovements({history}){
 
     const [Movements, SetMovements] = useState([]);
   const [Filter, setFilter] = useState([]);
@@ -127,7 +127,7 @@ export default function ProductMovements(props){
               <br />
               <button
                 className="btn btn-primary"
-                onClick={() => SetOpenModal(true)}
+                onClick={() => history.push('/AddMovement')}
                 style={{ position: "relative" }}
               >
                 <i className="fas fa-plus"></i> Nuevo Movimiento
