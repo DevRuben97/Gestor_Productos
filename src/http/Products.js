@@ -19,3 +19,7 @@ export async function EditProduct(Data){
 export async function DeleteProduct(id){
     return await http.delete(`/Products/${id}`)
 }
+
+export async function productsForSelect(){
+    return await http.get('/Products/productsForSelect');
+}

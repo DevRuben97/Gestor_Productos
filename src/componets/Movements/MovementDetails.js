@@ -1,10 +1,12 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import {Formik} from 'formik';
 
 import Select from 'react-select';
 
 import Table from '../Table';
 
+
+import {productsForSelect} from '../../http/Products'
 
 export default function MovementDetails({setDetails}){
 
@@ -14,6 +16,20 @@ export default function MovementDetails({setDetails}){
     })
     const [array, setArray]= useState([]);
     const [productsSelect, setProductsSelect]= useState([]);
+
+
+    useEffect(()=> {
+      async function Fetch(){
+        const {data}= await productsForSelect();
+        console.log(data);
+        setProductsSelect(data.Data);
+      }
+      Fetch();
+    },[])
+
+    function get_productInfo(id){
+
+    }
 
     function insert(value){
         console.log(value)
@@ -36,8 +52,11 @@ export default function MovementDetails({setDetails}){
                                  <Select
                                  placeholder="Seleccione el producto"
                                  noOptionsMessage={()=> "No hay productos"}
-                                 value={productsSelect}
-                                 onChange={(selected)=> setFieldValue('product_id', selected.value)}
+                                 options={productsSelect}
+                                 onChange={(selected)=> {
+                                  setFieldValue('product_id', selected.value);
+                                  get_productInfo(selected.value)
+                                 }}
                                  />
                             </div>
                             <br/>
@@ -61,6 +80,20 @@ export default function MovementDetails({setDetails}){
                             <div className="row" style={{marginTop: "20px"}}>
                                 <Table
                                 Titles={["Producto", "Precio", "Stock", "Cantidad", "SubTotal", "Acción"]}
+                                Body={array.map((item,index)=> (
+                                  <tr>
+                                    <th>{item.price}</th>
+                                    <th>{item.price}</th>
+                                    <th>{item.stock}</th>
+                                    <th>{item.quantity}</th>
+                                    <th>{(item.price * item.quantity)}</th>
+                                    <th>
+                                      <a className="btn btn-secondary" href="#" data-tip="Eliminar producto">
+                                      <i class="fas fa-trash-alt"></i>
+                                      </a>
+                                    </th>
+                                  </tr>
+                                ))}
                                 />
                             </div>
                         </div>
