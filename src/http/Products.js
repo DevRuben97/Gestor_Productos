@@ -21,5 +21,5 @@ export async function DeleteProduct(id){
 }
 
 export async function productsForSelect(){
-    return await http.get('/Products/productsForSelect');
+    return await http.get('/Products/ForSelect/0');
 }
