@@ -9,7 +9,7 @@ import Table from "../Table";
 
 import { productsForSelect, GetProductById } from "../../http/Products";
 
-export default function MovementDetails({ setDetails }) {
+export default function MovementDetails({Details, setDetails }) {
   const [initialValues, setInitialValues] = useState({
     product_id: 0,
     quantity: 0,
@@ -25,6 +25,11 @@ export default function MovementDetails({ setDetails }) {
     async function Fetch() {
       const { data } = await productsForSelect();
       setProductsSelect(data.Data);
+
+      if (Details.Length> 0){
+        setArray(Details);
+      }
+      
     }
     Fetch();
   }, []);
@@ -45,6 +50,7 @@ export default function MovementDetails({ setDetails }) {
     };
     newArray.push(object);
     setArray(newArray);
+    setDetails(newArray);
 
     //reset form:
     setSelectedProduct({});
@@ -64,6 +70,7 @@ export default function MovementDetails({ setDetails }) {
       const newArray = [...array];
       newArray.splice(index);
       setArray(newArray);
+      setDetails(newArray);
     }
   }
 

@@ -18,7 +18,7 @@ export default function FrmMovement({history}){
     //const title= isEdit? "Agregar Movimiento": "Editar Movimiento"
 
     function save(values){
-
+        alert('test');
     }
 
     return (
@@ -32,7 +32,7 @@ export default function FrmMovement({history}){
             validateOnBlur={true}
             enableReinitialize={true}
             >
-            {({handleSubmit, handleChange,values,errors})=> (
+            {({handleSubmit, handleChange, setFieldValue,values,errors})=> (
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-5">
@@ -50,7 +50,13 @@ export default function FrmMovement({history}){
                     <textarea className="form-control" onChange={handleChange('comments')} rows={5}/>
                     </div>
                     <br/>
-                    <MovementDetails/> 
+                    <MovementDetails
+                    Details={values.details}
+                    setDetails={(value)=> setFieldValue('details',value)}
+                    /> 
+                    <div className="row" style={{marginTop: '15px', marginLeft: '10px'}}>
+                        <button className="btn btn-primary btn-lg"  type="submit"><i class="fas fa-check"></i> Guardar Cambios</button>
+                    </div>
                 </form>
 
             )}
