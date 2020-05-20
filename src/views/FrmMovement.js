@@ -32,7 +32,7 @@ export default function FrmMovement({history}){
             validateOnBlur={true}
             enableReinitialize={true}
             >
-            {({handleSubmit, handleChange, setFieldValue,values,errors})=> (
+            {({handleSubmit, handleChange, setFieldValue,values})=> (
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-5">

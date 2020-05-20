@@ -3,9 +3,10 @@ import { Formik } from "formik";
 
 import Select from "react-select";
 import numeral from "numeral";
-import Swal from "sweetalert2";
+import {question} from '../../helpers/alerts';
 
 import Table from "../Table";
+import MovementTotals from './MovementTotals';
 
 import { productsForSelect, GetProductById } from "../../http/Products";
 
@@ -47,6 +48,7 @@ export default function MovementDetails({Details, setDetails }) {
       stock: SelectedProduct.Stock,
       name: SelectedProduct.Name,
       quantity: value.quantity,
+      subTotal: SelectedProduct.Price * value.quantity
     };
     newArray.push(object);
     setArray(newArray);
@@ -57,14 +59,7 @@ export default function MovementDetails({Details, setDetails }) {
   }
 
   async function deleteProduct(index) {
-    const confirm = await Swal.fire({
-      text: "¿Esta seguro de eliminar este producto de la lista?",
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-      icon: "question",
-    });
+    const confirm = await question("¿Esta seguro de eliminar este producto de la lista?");
 
     if (confirm.value) {
       const newArray = [...array];
@@ -143,6 +138,7 @@ export default function MovementDetails({Details, setDetails }) {
                 </div>
               </div>
               <div className="row" style={{ marginTop: "20px" }}>
+                <div className="col-md-10">
                 <Table
                   Titles={[
                     "Producto",
@@ -159,9 +155,7 @@ export default function MovementDetails({Details, setDetails }) {
                       <th>{item.stock}</th>
                       <th>{item.quantity}</th>
                       <th>
-                        {numeral(
-                          numeral(item.price).value() * item.quantity
-                        ).format(0, 0)}
+                        {numeral(item.subTotal).format(0,0)}
                       </th>
                       <th>
                         <a
@@ -176,6 +170,12 @@ export default function MovementDetails({Details, setDetails }) {
                     </tr>
                   ))}
                 />
+                </div>
+                <div className="col-sm">
+                    <MovementTotals
+                    Details={array}
+                    />
+                </div>
               </div>
             </div>
           </form>
