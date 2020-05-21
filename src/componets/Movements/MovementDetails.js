@@ -10,7 +10,7 @@ import MovementTotals from './MovementTotals';
 
 import { productsForSelect, GetProductById } from "../../http/Products";
 
-export default function MovementDetails({Details, setDetails }) {
+export default function MovementDetails({Details, setDetails, error }) {
   const [initialValues, setInitialValues] = useState({
     product_id: 0,
     quantity: 0,
@@ -48,7 +48,8 @@ export default function MovementDetails({Details, setDetails }) {
       stock: SelectedProduct.Stock,
       name: SelectedProduct.Name,
       quantity: value.quantity,
-      subTotal: SelectedProduct.Price * value.quantity
+      product_id: SelectedProduct.Id,
+      subTotal: numeral(SelectedProduct.Price).value() * value.quantity
     };
     newArray.push(object);
     setArray(newArray);
@@ -71,7 +72,7 @@ export default function MovementDetails({Details, setDetails }) {
 
   return (
     <Fragment>
-      <h2 className="text-center">Detalle del movimiento</h2>
+      <h2 className="text-center" style={{color: error? "red": "black"}}>Detalle del Movimiento*</h2>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -106,7 +107,7 @@ export default function MovementDetails({Details, setDetails }) {
                     type="text"
                     className="form-control"
                     disabled
-                    value={numeral(SelectedProduct.Price).format(0, 0)}
+                    value={numeral(numeral(SelectedProduct.Price).value()).format(0, 0)}
                   />
                 </div>
                 <div className="col-sm-2">
@@ -126,6 +127,9 @@ export default function MovementDetails({Details, setDetails }) {
                     max={SelectedProduct.Stock}
                     value={values.quantity}
                     onChange={handleChange("quantity")}
+                    disabled={
+                      values.product_id===0
+                    }
                   />
                 </div>
                 <div className="col-sm-2">
@@ -134,6 +138,9 @@ export default function MovementDetails({Details, setDetails }) {
                     className="btn btn-primary"
                     value="Agregar"
                     style={{ marginTop: "30px" }}
+                    disabled={
+                      values.quantity===0
+                    }
                   />
                 </div>
               </div>

@@ -8,14 +8,24 @@ export default function MovementTotals({Details}){
    useEffect(()=> {
     if (Details && Details.length>0){
         console.log(Details);
-       const value=  Details.reduce((a,b)=> a.SubTotal + b.SubTotal);
+        let value= 0;
+        Details.map((item)=> {
+            value+= item.subTotal;
+       })
        setSubTotal(value);
+    }
+    else{
+        setSubTotal(0);
     }
    },[Details])
 
     return (
         <Fragment>
             <label>SubTotal: <strong> ${numeral(SubTotal).format(0,0)}</strong></label>
+            <br/>
+            <label>Impuestos: <strong>${(numeral((SubTotal * 0.18)).format(0,0))}</strong></label>
+            <br/>
+            <label>Total: <strong>${numeral(SubTotal + (SubTotal * 0.18)).format(0,0)}</strong></label>
         </Fragment>
     )
 }
