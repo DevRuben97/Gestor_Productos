@@ -10,10 +10,10 @@ import MovementTotals from './MovementTotals';
 
 import { productsForSelect, GetProductById } from "../../http/Products";
 
-export default function MovementDetails({Details, setDetails, error }) {
+export default function MovementDetails({Details, setDetails,setTotal, error, errorMessage }) {
   const [initialValues, setInitialValues] = useState({
-    product_id: 0,
-    quantity: 0,
+    Product_id: 0,
+    Quantity: 0,
     stock: 0,
     price: 0,
     product_name: "",
@@ -47,9 +47,9 @@ export default function MovementDetails({Details, setDetails, error }) {
       price: numeral(SelectedProduct.Price).format(0, 0),
       stock: SelectedProduct.Stock,
       name: SelectedProduct.Name,
-      quantity: value.quantity,
-      product_id: SelectedProduct.Id,
-      subTotal: numeral(SelectedProduct.Price).value() * value.quantity
+      Quantity: value.Quantity,
+      Product_id: SelectedProduct.Id,
+      subTotal: numeral(SelectedProduct.Price).value() * value.Quantity
     };
     newArray.push(object);
     setArray(newArray);
@@ -72,7 +72,12 @@ export default function MovementDetails({Details, setDetails, error }) {
 
   return (
     <Fragment>
+      <div>
       <h2 className="text-center" style={{color: error? "red": "black"}}>Detalle del Movimiento*</h2>
+      {(errorMessage) && (
+        <p style={{color: 'red'}} className="text-center">{errorMessage}</p>
+      )}
+      </div>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -82,7 +87,7 @@ export default function MovementDetails({Details, setDetails, error }) {
           resetForm();
         }}
       >
-        {({ handleChange, handleSubmit, setFieldValue, values, errors }) => (
+        {({ handleChange, handleSubmit, setFieldValue, values }) => (
           <form onSubmit={handleSubmit}>
             <div className="container">
               <div style={{ width: "40%" }}>
@@ -91,11 +96,11 @@ export default function MovementDetails({Details, setDetails, error }) {
                   noOptionsMessage={() => "No hay productos"}
                   options={productsSelect}
                   onChange={(selected) => {
-                    setFieldValue("product_id", selected.value);
+                    setFieldValue("Product_id", selected.value);
                     get_productInfo(selected.value);
                   }}
                   value={productsSelect.filter(
-                    (data) => data.value === values.product_id
+                    (data) => data.value === values.Product_id
                   )}
                 />
               </div>
@@ -125,10 +130,10 @@ export default function MovementDetails({Details, setDetails, error }) {
                     type="number"
                     className="form-control"
                     max={SelectedProduct.Stock}
-                    value={values.quantity}
-                    onChange={handleChange("quantity")}
+                    value={values.Quantity}
+                    onChange={handleChange("Quantity")}
                     disabled={
-                      values.product_id===0
+                      values.Product_id===0
                     }
                   />
                 </div>
@@ -139,7 +144,7 @@ export default function MovementDetails({Details, setDetails, error }) {
                     value="Agregar"
                     style={{ marginTop: "30px" }}
                     disabled={
-                      values.quantity===0
+                      values.Quantity===0
                     }
                   />
                 </div>
@@ -160,7 +165,7 @@ export default function MovementDetails({Details, setDetails, error }) {
                       <th>{item.name}</th>
                       <th>{item.price}</th>
                       <th>{item.stock}</th>
-                      <th>{item.quantity}</th>
+                      <th>{item.Quantity}</th>
                       <th>
                         {numeral(item.subTotal).format(0,0)}
                       </th>
@@ -180,6 +185,7 @@ export default function MovementDetails({Details, setDetails, error }) {
                 </div>
                 <div className="col-sm">
                     <MovementTotals
+                    setTotal={setTotal}
                     Details={array}
                     />
                 </div>
