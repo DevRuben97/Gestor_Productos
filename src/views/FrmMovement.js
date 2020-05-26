@@ -4,20 +4,22 @@ import Select from "react-select";
 
 import MovementDetails from "../componets/Movements/MovementDetails";
 import { MOVEMENT_SCHEME } from "../helpers/formValidations";
-import { alert } from "../helpers/alerts";
+import { message } from "../helpers/alerts";
+
 import { getMovementTypes, newMovement } from "../http/Movements";
 
 export default function FrmMovement({ history }) {
   const [initialValues, setValues] = useState({
     Id: 0,
     Date: null,
-    Invoice: null,
+    Invoice: "",
     Amount: 0,
     Type: "",
-    Comments: null,
+    Comments: "",
     Details: [],
   });
   const [MovementTypes, setMovementTypes] = useState([]);
+  const [IsLoading, setLoading] = useState(false);
   //const isEdit= history.state.isEdit;
   //const title= isEdit? "Agregar Movimiento": "Editar Movimiento"
 
@@ -31,15 +33,17 @@ export default function FrmMovement({ history }) {
 
   async function save(values) {
     console.log(values);
+    setLoading(true);
     try {
       const { data } = await newMovement(values);
       console.log(data);
       const success = data.OperationSuccess;
       if (success) {
-        alert(data.Message, "success");
+        message(data.Message, "success");
       } else {
-        alert(data.Message, "warning");
+        message(data.Message, "warning");
       }
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -56,25 +60,51 @@ export default function FrmMovement({ history }) {
         initialValues={initialValues}
         onSubmit={async (values) => await save(values)}
         enableReinitialize
-        validateOnBlur
+        validateOnChange
         validationSchema={MOVEMENT_SCHEME}
       >
-        {({ handleSubmit, handleChange, setFieldValue, values, errors }) => (
-          <form onSubmit={handleSubmit}>
+        {({
+          handleSubmit,
+          handleChange,
+          setFieldValue,
+          touched,
+          values,
+          errors,
+          isValid,
+        }) => (
+          <form
+            onSubmit={(event) => {
+              handleSubmit(event);
+              if (!isValid) {
+                message("Aún tiene campos requeridos por llenar.", "warning");
+              }
+            }}
+          >
             <div className="row">
               <div className="col-md-5">
-                <label style={{ color: errors.Date ? "red" : "black" }}>
+                <label
+                  style={{
+                    color: errors.Date && touched.Date ? "red" : "black",
+                  }}
+                >
                   <strong>Fecha*: </strong>
                 </label>
                 <input
                   type="date"
                   className="form-control"
                   onChange={handleChange("Date")}
+                  value={values.Date}
                 />
-                <label style={{ color: "red" }}>{errors.Date}</label>
+                {touched.Date && (
+                  <label style={{ color: "red" }}>{errors.Date}</label>
+                )}
               </div>
               <div className="col-md-3">
-                <label style={{ color: errors.Invoice ? "red" : "black" }}>
+                <label
+                  style={{
+                    color: errors.Invoice && touched.Invoice ? "red" : "black",
+                  }}
+                >
                   <strong>Numero de la Factura *:</strong>
                 </label>
                 <input
@@ -82,19 +112,29 @@ export default function FrmMovement({ history }) {
                   className="form-control"
                   onChange={handleChange("Invoice")}
                   placeholder="#0000000"
+                  value={values.Invoice}
                 />
-                <label style={{ color: "red" }}>{errors.Invoice}</label>
+                {touched.Invoice && (
+                  <label style={{ color: "red" }}>{errors.Invoice}</label>
+                )}
               </div>
               <div className="col-md-3">
-                <label style={{ color: errors.Type ? "red" : "black" }}>
+                <label
+                  style={{
+                    color: errors.Type && touched.Type ? "red" : "black",
+                  }}
+                >
                   <strong>Tipo*: </strong>
                 </label>
                 <Select
                   placeholder="Seleccione"
                   options={MovementTypes}
                   onChange={(selected) => setFieldValue("Type", selected.value)}
+                  value={MovementTypes.filter((s) => s.value === values.Type)}
                 />
-                <label style={{ color: "red" }}>{errors.Type}</label>
+                {touched.Type && (
+                  <label style={{ color: "red" }}>{errors.Type}</label>
+                )}
               </div>
             </div>
             <br />
@@ -106,6 +146,7 @@ export default function FrmMovement({ history }) {
                 className="form-control"
                 onChange={handleChange("Comments")}
                 rows={5}
+                value={values.Comments}
               />
             </div>
             <br />
@@ -113,15 +154,20 @@ export default function FrmMovement({ history }) {
               Details={values.Details}
               setDetails={(value) => setFieldValue("Details", value)}
               setTotal={(value) => setFieldValue("Amount", value)}
-              error={errors.Details ? true : false}
-              errorMessage={errors.Details}
+              error={errors.Details && touched.Details ? true : false}
+              errorMessage={touched.Details ? errors.Details : undefined}
             />
             <div
               className="row"
               style={{ marginTop: "15px", marginLeft: "10px" }}
             >
-              <button className="btn btn-primary btn-lg" type="submit">
-                <i class="fas fa-check"></i> Guardar Cambios
+              <button
+                className="btn btn-primary btn-lg"
+                type="submit"
+                disabled={IsLoading}
+              >
+                <i class="fas fa-check"></i>{" "}
+                {IsLoading ? "Enviando Datos.." : "Guardar Cambios"}
               </button>
             </div>
           </form>

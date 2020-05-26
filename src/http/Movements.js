@@ -4,7 +4,7 @@ import http from './http';
 
 export async function getMovements(){
 
-    return await http.get('/Movements/')
+    return await http.get('/Movement/')
 }
 
 export async function getMovementTypes(){

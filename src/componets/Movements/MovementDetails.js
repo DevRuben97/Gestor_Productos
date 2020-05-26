@@ -3,14 +3,21 @@ import { Formik } from "formik";
 
 import Select from "react-select";
 import numeral from "numeral";
-import {question} from '../../helpers/alerts';
+import { question } from "../../helpers/alerts";
 
 import Table from "../Table";
-import MovementTotals from './MovementTotals';
+import MovementTotals from "./MovementTotals";
+import { message } from "../../helpers/alerts";
 
 import { productsForSelect, GetProductById } from "../../http/Products";
 
-export default function MovementDetails({Details, setDetails,setTotal, error, errorMessage }) {
+export default function MovementDetails({
+  Details,
+  setDetails,
+  setTotal,
+  error,
+  errorMessage,
+}) {
   const [initialValues, setInitialValues] = useState({
     Product_id: 0,
     Quantity: 0,
@@ -27,10 +34,9 @@ export default function MovementDetails({Details, setDetails,setTotal, error, er
       const { data } = await productsForSelect();
       setProductsSelect(data.Data);
 
-      if (Details.Length> 0){
+      if (Details.Length > 0) {
         setArray(Details);
       }
-      
     }
     Fetch();
   }, []);
@@ -43,24 +49,34 @@ export default function MovementDetails({Details, setDetails,setTotal, error, er
 
   function insert(value) {
     const newArray = [...array];
-    const object = {
-      price: numeral(SelectedProduct.Price).format(0, 0),
-      stock: SelectedProduct.Stock,
-      name: SelectedProduct.Name,
-      Quantity: value.Quantity,
-      Product_id: SelectedProduct.Id,
-      subTotal: numeral(SelectedProduct.Price).value() * value.Quantity
-    };
-    newArray.push(object);
-    setArray(newArray);
-    setDetails(newArray);
+    const product_filter = newArray.filter(
+      (item) => item.Product_id === SelectedProduct.Id
+    );
+    console.log(product_filter);
+    if (product_filter.length > 0) {
+      message("El producto seleccionado ya se encuntra en la lista.", "warning");
+    } else {
+      const object = {
+        price: numeral(SelectedProduct.Price).format(0, 0),
+        stock: SelectedProduct.Stock,
+        name: SelectedProduct.Name,
+        Quantity: value.Quantity,
+        Product_id: SelectedProduct.Id,
+        subTotal: numeral(SelectedProduct.Price).value() * value.Quantity,
+      };
+      newArray.push(object);
+      setArray(newArray);
+      setDetails(newArray);
 
-    //reset form:
-    setSelectedProduct({});
+      //reset form:
+      setSelectedProduct({});
+    }
   }
 
   async function deleteProduct(index) {
-    const confirm = await question("¿Esta seguro de eliminar este producto de la lista?");
+    const confirm = await question(
+      "¿Esta seguro de eliminar este producto de la lista?"
+    );
 
     if (confirm.value) {
       const newArray = [...array];
@@ -73,10 +89,14 @@ export default function MovementDetails({Details, setDetails,setTotal, error, er
   return (
     <Fragment>
       <div>
-      <h2 className="text-center" style={{color: error? "red": "black"}}>Detalle del Movimiento*</h2>
-      {(errorMessage) && (
-        <p style={{color: 'red'}} className="text-center">{errorMessage}</p>
-      )}
+        <h2 className="text-center" style={{ color: error ? "red" : "black" }}>
+          Detalle del Movimiento*
+        </h2>
+        {errorMessage && (
+          <p style={{ color: "red" }} className="text-center">
+            {errorMessage}
+          </p>
+        )}
       </div>
       <Formik
         initialValues={initialValues}
@@ -112,7 +132,9 @@ export default function MovementDetails({Details, setDetails,setTotal, error, er
                     type="text"
                     className="form-control"
                     disabled
-                    value={numeral(numeral(SelectedProduct.Price).value()).format(0, 0)}
+                    value={numeral(
+                      numeral(SelectedProduct.Price).value()
+                    ).format(0, 0)}
                   />
                 </div>
                 <div className="col-sm-2">
@@ -132,62 +154,55 @@ export default function MovementDetails({Details, setDetails,setTotal, error, er
                     max={SelectedProduct.Stock}
                     value={values.Quantity}
                     onChange={handleChange("Quantity")}
-                    disabled={
-                      values.Product_id===0
-                    }
+                    disabled={values.Product_id === 0}
                   />
                 </div>
                 <div className="col-sm-2">
-                  <input
+                  <button
                     type="submit"
                     className="btn btn-primary"
                     value="Agregar"
                     style={{ marginTop: "30px" }}
-                    disabled={
-                      values.Quantity===0
-                    }
-                  />
+                    disabled={values.Quantity === 0}
+                  >
+                    <i class="fas fa-plus"></i>
+                  </button>
                 </div>
               </div>
               <div className="row" style={{ marginTop: "20px" }}>
                 <div className="col-md-10">
-                <Table
-                  Titles={[
-                    "Producto",
-                    "Precio",
-                    "Stock",
-                    "Cantidad",
-                    "SubTotal",
-                    "Acción",
-                  ]}
-                  Body={array.map((item, index) => (
-                    <tr key={index}>
-                      <th>{item.name}</th>
-                      <th>{item.price}</th>
-                      <th>{item.stock}</th>
-                      <th>{item.Quantity}</th>
-                      <th>
-                        {numeral(item.subTotal).format(0,0)}
-                      </th>
-                      <th>
-                        <a
-                          className="btn btn-secondary"
-                          href="#"
-                          data-tip="Eliminar producto"
-                          onClick={() => deleteProduct(index)}
-                        >
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </th>
-                    </tr>
-                  ))}
-                />
+                  <Table
+                    Titles={[
+                      "Producto",
+                      "Precio",
+                      "Stock",
+                      "Cantidad",
+                      "SubTotal",
+                      "Acción",
+                    ]}
+                    Body={array.map((item, index) => (
+                      <tr key={index}>
+                        <th>{item.name}</th>
+                        <th>{item.price}</th>
+                        <th>{item.stock}</th>
+                        <th>{item.Quantity}</th>
+                        <th>{numeral(item.subTotal).format(0, 0)}</th>
+                        <th>
+                          <a
+                            className="btn btn-secondary"
+                            href="#"
+                            data-tip="Eliminar producto"
+                            onClick={() => deleteProduct(index)}
+                          >
+                            <i class="fas fa-trash-alt"></i>
+                          </a>
+                        </th>
+                      </tr>
+                    ))}
+                  />
                 </div>
                 <div className="col-sm">
-                    <MovementTotals
-                    setTotal={setTotal}
-                    Details={array}
-                    />
+                  <MovementTotals setTotal={setTotal} Details={array} />
                 </div>
               </div>
             </div>

@@ -16,7 +16,7 @@ export const USER_LOGIN_SCHEMA= yup.object().shape({
 
 export const MOVEMENT_SCHEME= yup.object().shape({
     Date: yup.string().nullable().required("La Fecha es requerida"),
-    Invoice: yup.string().nullable().required("Introduce la Factura"),
+    Invoice: yup.string().required("Introduce la Factura"),
     Type: yup.string().required("El Tipo es requerido"),
     Details: yup.array().min(1, "Es requerido como minimo un producto")
 })

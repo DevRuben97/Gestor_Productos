@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 
-export function alert(message,type){
+export function message(message,type){
     Swal.fire({
         text: message,
         icon: type!== undefined || type!== null? type: 'info'
