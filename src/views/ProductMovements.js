@@ -74,7 +74,7 @@ let numeral = require('numeral');
                         <a
                           data-tip="Editar el Movimiento"
                           className="btn btn-secondary"
-                          href="#"
+                          href=""
                           onClick={() => {
                             history.push('/AddMovement', {
                               id: item.Id,

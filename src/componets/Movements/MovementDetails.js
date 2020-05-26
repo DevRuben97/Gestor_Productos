@@ -33,13 +33,12 @@ export default function MovementDetails({
     async function Fetch() {
       const { data } = await productsForSelect();
       setProductsSelect(data.Data);
-
-      if (Details.Length > 0) {
+      if (Details.length > 0) {
         setArray(Details);
       }
     }
     Fetch();
-  }, []);
+  }, [Details]);
 
   async function get_productInfo(id) {
     const { data } = await GetProductById(id);

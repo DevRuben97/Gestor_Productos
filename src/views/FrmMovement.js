@@ -26,7 +26,7 @@ function FrmMovement({ history }) {
   });
   const [MovementTypes, setMovementTypes] = useState([]);
   const [IsLoading, setLoading] = useState(false);
-  console.log(history);
+
   const isEdit= history.location.state?.isEdit;
   const movementId= history.location.state?.id;
   const title= (isEdit)? "Editar Movimiento": "Agregar Movimiento"
@@ -44,6 +44,7 @@ function FrmMovement({ history }) {
 
   async function GetMovement(){
     const {data}= await getMovementById(movementId);
+    console.log(data);
     setValues(data.Data);
   }
 
@@ -60,6 +61,7 @@ function FrmMovement({ history }) {
         message(data.Message, "warning");
       }
       setLoading(false);
+      history.push('/ProductMovements');
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +69,7 @@ function FrmMovement({ history }) {
   return (
     <div className="container">
       <br />
-      <h2 className="text-center">{title}</h2>
+      <h2 className="text-center"><i className="fas fa-exchange-alt"></i> {title}</h2>
       <p>
         Registre los movimientos de una serie de productos. Los campos marcados
         con (*) son requeridos
