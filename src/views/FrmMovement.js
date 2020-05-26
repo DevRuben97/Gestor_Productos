@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import Select from "react-select";
+import {withRouter} from 'react-router-dom';
 
 import MovementDetails from "../componets/Movements/MovementDetails";
 import { MOVEMENT_SCHEME } from "../helpers/formValidations";
 import { message } from "../helpers/alerts";
 
-import { getMovementTypes, newMovement } from "../http/Movements";
+import { 
+  getMovementTypes,
+  newMovement,
+  getMovementById
+   }
+    from "../http/Movements";
 
-export default function FrmMovement({ history }) {
+function FrmMovement({ history }) {
   const [initialValues, setValues] = useState({
     Id: 0,
     Date: null,
@@ -20,16 +26,26 @@ export default function FrmMovement({ history }) {
   });
   const [MovementTypes, setMovementTypes] = useState([]);
   const [IsLoading, setLoading] = useState(false);
-  //const isEdit= history.state.isEdit;
-  //const title= isEdit? "Agregar Movimiento": "Editar Movimiento"
+  console.log(history);
+  const isEdit= history.location.state?.isEdit;
+  const movementId= history.location.state?.id;
+  const title= (isEdit)? "Editar Movimiento": "Agregar Movimiento"
 
   useEffect(() => {
     async function Fetch() {
       const { data } = await getMovementTypes();
       setMovementTypes(data.Data);
+      if (isEdit){
+        GetMovement();
+      }
     }
     Fetch();
   }, []);
+
+  async function GetMovement(){
+    const {data}= await getMovementById(movementId);
+    setValues(data.Data);
+  }
 
   async function save(values) {
     console.log(values);
@@ -51,7 +67,7 @@ export default function FrmMovement({ history }) {
   return (
     <div className="container">
       <br />
-      <h2 className="text-center">Registrar Movimiento</h2>
+      <h2 className="text-center">{title}</h2>
       <p>
         Registre los movimientos de una serie de productos. Los campos marcados
         con (*) son requeridos
@@ -176,3 +192,5 @@ export default function FrmMovement({ history }) {
     </div>
   );
 }
+
+export default withRouter(FrmMovement);

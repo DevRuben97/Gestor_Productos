@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HeaderMenu from "./componets/Header";
 
 import { Routes, Routeswithoutlogin } from "./Routes";
-import { bool, boolean } from "yup";
 
 import Auth from "./Context/AuthContext";
 import UserInfo from './Context/UserContext';

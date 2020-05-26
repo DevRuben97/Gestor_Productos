@@ -3,6 +3,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 //Libreries:
 import Swal from "sweetalert2";
 import Modal from "react-responsive-modal";
+import {withRouter} from 'react-router-dom'
 
 //Componets:
 import Table from "../componets/Table";
@@ -16,16 +17,12 @@ import {getMovements} from '../http/Movements';
 let numeral = require('numeral');
 
 
-
-export default function ProductMovements({history}){
+ function ProductMovements({history}){
 
     const [Movements, SetMovements] = useState([]);
   const [Filter, setFilter] = useState([]);
-  const [MovementId, SetMovementId] = useState(0);
   const [OpenModal, SetOpenModal] = useState(false);
   const [IsLoanding, SetLoanding] = useState(false);
-  const [FrmEdit, SetFrmEdit] = useState(false);
-
 
 
   useEffect(()=>{
@@ -41,12 +38,7 @@ export default function ProductMovements({history}){
     SetLoanding(false);
   }
 
-   function FilterMovements(){
 
-    }
-    function ChangeState(product,Id){
-
-    }
     function SetTable() {
         if (IsLoanding) {
           return (
@@ -80,20 +72,22 @@ export default function ProductMovements({history}){
                       <th>{item.Type}</th>
                       <th>
                         <a
-                          data-tip="Editar el producto"
+                          data-tip="Editar el Movimiento"
                           className="btn btn-secondary"
                           href="#"
-                          //onClick={() => EditProduct(item.Id)}
+                          onClick={() => {
+                            history.push('/AddMovement', {
+                              id: item.Id,
+                              isEdit: true
+                            })
+                          }}
                         >
                           <i class="fas fa-edit"></i>
                         </a>
                         <a
-                          data-tip="Eliminar el producto"
+                          data-tip="Cambiar el estado"
                           className="btn btn-danger"
                           href="#"
-                          onClick={() =>
-                            ChangeState({ Name: item.Name, Id: item.Id })
-                          }
                         >
                           <i class="fas fa-trash-alt"></i>
                         </a>
@@ -120,7 +114,7 @@ export default function ProductMovements({history}){
                 className="form-control"
                 style={{ width: "50%" }}
                 placeholder="Buscar por Nombre"
-                onChange={e => FilterMovements(e.target.value)}
+                //onChange={e => FilterMovements(e.target.value)}
               ></input>
             </div>
             <div className="col-md-3">
@@ -150,3 +144,5 @@ export default function ProductMovements({history}){
       </Fragment>
     )
 }
+
+export default withRouter(ProductMovements);

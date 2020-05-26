@@ -14,3 +14,7 @@ export async function getMovementTypes(){
 export async function newMovement(data){
     return await http.post('/Movement/', data);
 }
+
+export async function getMovementById(id){
+    return await http.get(`/Movement/${id}`);
+}

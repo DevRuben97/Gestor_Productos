@@ -7,6 +7,7 @@ import Login from './views/Login';
 import UserProfile from './views/UserProfile';
 import ProductMovements from './views/ProductMovements'
 import FrmMovement from './views/FrmMovement';
+import NoMatch from './views/404';
 
 export const Routes= [
     {
@@ -33,6 +34,11 @@ export const Routes= [
         path: '/AddMovement',
         exact: false,
         main: ()=> <FrmMovement/>
+    },
+    {
+        path: '*',
+        exact: false,
+        main: ()=> <NoMatch/>
     }
 ]
 
