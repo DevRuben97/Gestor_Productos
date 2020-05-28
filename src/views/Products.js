@@ -110,24 +110,22 @@ const Products = (pros) => {
                   <th>{item.Stock}</th>
                   <th>{item.Provider}</th>
                   <th>
-                    <a
+                    <button
                       data-tip="Editar el producto"
                       className="btn btn-secondary"
-                      href="#"
                       onClick={() => EditProduct(item.Id)}
                     >
                       <i class="fas fa-edit"></i>
-                    </a>
-                    <a
+                    </button>
+                    <button
                       data-tip="Eliminar el producto"
                       className="btn btn-danger"
-                      href="#"
                       onClick={() =>
                         SetDeleteProduct({ Name: item.Name, Id: item.Id })
                       }
                     >
                       <i class="fas fa-trash-alt"></i>
-                    </a>
+                    </button>
                   </th>
                 </tr>
               ))}
@@ -171,18 +169,13 @@ const Products = (pros) => {
           <div className="card-body">{SetTable()}</div>
         </div>
       </div>
-      <Modal
-        open={OpenModal}
-        onClose={() => SetOpenModal(false)}
-        center={true}
-        classNames={{ modal: "ModalContenedor" }}
-      >
         <FrmProduct
           IsEdit={FrmEdit}
           ProductId={ProductEditId}
           SetOpenModal={SetOpenModal}
+          open={OpenModal}
+          onclose={() => SetOpenModal(false)}
         ></FrmProduct>
-      </Modal>
     </Fragment>
   );
 };

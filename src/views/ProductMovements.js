@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 
 //Libreries:
-import Swal from "sweetalert2";
-import Modal from "react-responsive-modal";
 import {withRouter} from 'react-router-dom'
 
 //Componets:
@@ -20,9 +18,8 @@ let numeral = require('numeral');
  function ProductMovements({history}){
 
     const [Movements, SetMovements] = useState([]);
-  const [Filter, setFilter] = useState([]);
-  const [OpenModal, SetOpenModal] = useState(false);
-  const [IsLoanding, SetLoanding] = useState(false);
+    const [Filter, setFilter] = useState([]);
+    const [IsLoanding, SetLoanding] = useState(false);
 
 
   useEffect(()=>{
@@ -58,7 +55,7 @@ let numeral = require('numeral');
                     "Fecha",
                     "Monto",
                     "Comentarios",
-                    "Responsable",
+                    "Usuario Creador",
                     "Tipo",
                     "Acciones"
                   ]}
@@ -68,13 +65,12 @@ let numeral = require('numeral');
                       <th>{item.Date}</th>
                       <th>${numeral(item.Amount).format(0, 0)}</th>
                       <th>{item.Comments}</th>
-                      <th>{item.User}</th>
-                      <th>{item.Type}</th>
+                      <th>{item.UserFullName}</th>
+                      <th>{item.TypeLabel}</th>
                       <th>
-                        <a
+                        <button
                           data-tip="Editar el Movimiento"
                           className="btn btn-secondary"
-                          href=""
                           onClick={() => {
                             history.push('/AddMovement', {
                               id: item.Id,
@@ -83,14 +79,14 @@ let numeral = require('numeral');
                           }}
                         >
                           <i class="fas fa-edit"></i>
-                        </a>
-                        <a
+                        </button>
+                        <button
                           data-tip="Cambiar el estado"
                           className="btn btn-danger"
                           href="#"
                         >
                           <i class="fas fa-trash-alt"></i>
-                        </a>
+                        </button>
                       </th>
                     </tr>
                   ))}
@@ -133,14 +129,6 @@ let numeral = require('numeral');
             <div className="card-body">{SetTable()}</div>
           </div>
         </div>
-        <Modal
-          open={OpenModal}
-          onClose={() => SetOpenModal(false)}
-          center={true}
-          classNames={{ modal: "ModalContenedor" }}
-        >
-          
-        </Modal>
       </Fragment>
     )
 }

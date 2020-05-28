@@ -17,6 +17,7 @@ export default function MovementDetails({
   setTotal,
   error,
   errorMessage,
+  OpenProductModal
 }) {
   const [initialValues, setInitialValues] = useState({
     Product_id: 0,
@@ -33,12 +34,12 @@ export default function MovementDetails({
     async function Fetch() {
       const { data } = await productsForSelect();
       setProductsSelect(data.Data);
-      if (Details.length > 0) {
+      if (Details && Details.length > 0) {
         setArray(Details);
       }
     }
     Fetch();
-  }, [Details]);
+  }, []);
 
   async function get_productInfo(id) {
     const { data } = await GetProductById(id);
@@ -112,19 +113,26 @@ export default function MovementDetails({
         {({ handleChange, handleSubmit, setFieldValue, values }) => (
           <form onSubmit={handleSubmit}>
             <div className="container">
-              <div style={{ width: "40%" }}>
-                <Select
-                  placeholder="Seleccione el producto"
-                  noOptionsMessage={() => "No hay productos"}
-                  options={productsSelect}
-                  onChange={(selected) => {
-                    setFieldValue("Product_id", selected.value);
-                    get_productInfo(selected.value);
-                  }}
-                  value={productsSelect.filter(
-                    (data) => data.value === values.Product_id
-                  )}
-                />
+              <div className="row">
+                <div className="col-md-5">
+                  <Select
+                    placeholder="Seleccione el producto"
+                    noOptionsMessage={() => "No hay productos"}
+                    options={productsSelect}
+                    onChange={(selected) => {
+                      setFieldValue("Product_id", selected.value);
+                      get_productInfo(selected.value);
+                    }}
+                    value={productsSelect.filter(
+                      (data) => data.value === values.Product_id
+                    )}
+                  />
+                </div>
+                <div className="col-sm-3">
+                  <button className="btn btn-primary" onClick={()=> OpenProductModal(true)} type="button">
+                    <i className="fas fa-plus"></i>
+                  </button>
+                </div>
               </div>
               <br />
               <div className="row">

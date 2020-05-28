@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import Select from "react-select";
-import {withRouter} from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 import MovementDetails from "../componets/Movements/MovementDetails";
+import FrmProduct from "../componets/Products/FrmProduct";
 import { MOVEMENT_SCHEME } from "../helpers/formValidations";
 import { message } from "../helpers/alerts";
 
-import { 
+import {
   getMovementTypes,
   newMovement,
-  getMovementById
-   }
-    from "../http/Movements";
+  getMovementById,
+  editMovement,
+} from "../http/Movements";
 
 function FrmMovement({ history }) {
   const [initialValues, setValues] = useState({
@@ -26,24 +27,25 @@ function FrmMovement({ history }) {
   });
   const [MovementTypes, setMovementTypes] = useState([]);
   const [IsLoading, setLoading] = useState(false);
+  const [isopenProductModal, setOpenModal] = useState(false);
 
-  const isEdit= history.location.state?.isEdit;
-  const movementId= history.location.state?.id;
-  const title= (isEdit)? "Editar Movimiento": "Agregar Movimiento"
+  const isEdit = history.location.state?.isEdit;
+  const movementId = history.location.state?.id;
+  const title = isEdit ? "Editar Movimiento" : "Agregar Movimiento";
 
   useEffect(() => {
     async function Fetch() {
       const { data } = await getMovementTypes();
       setMovementTypes(data.Data);
-      if (isEdit){
+      if (isEdit) {
         GetMovement();
       }
     }
     Fetch();
   }, []);
 
-  async function GetMovement(){
-    const {data}= await getMovementById(movementId);
+  async function GetMovement() {
+    const { data } = await getMovementById(movementId);
     console.log(data);
     setValues(data.Data);
   }
@@ -52,7 +54,9 @@ function FrmMovement({ history }) {
     console.log(values);
     setLoading(true);
     try {
-      const { data } = await newMovement(values);
+      const { data } = isEdit
+        ? await editMovement(values)
+        : await newMovement(values);
       console.log(data);
       const success = data.OperationSuccess;
       if (success) {
@@ -61,7 +65,7 @@ function FrmMovement({ history }) {
         message(data.Message, "warning");
       }
       setLoading(false);
-      history.push('/ProductMovements');
+      history.push("/ProductMovements");
     } catch (err) {
       console.error(err);
     }
@@ -69,7 +73,9 @@ function FrmMovement({ history }) {
   return (
     <div className="container">
       <br />
-      <h2 className="text-center"><i className="fas fa-exchange-alt"></i> {title}</h2>
+      <h2 className="text-center">
+        <i className="fas fa-exchange-alt"></i> {title}
+      </h2>
       <p>
         Registre los movimientos de una serie de productos. Los campos marcados
         con (*) son requeridos
@@ -174,6 +180,7 @@ function FrmMovement({ history }) {
               setTotal={(value) => setFieldValue("Amount", value)}
               error={errors.Details && touched.Details ? true : false}
               errorMessage={touched.Details ? errors.Details : undefined}
+              OpenProductModal={setOpenModal}
             />
             <div
               className="row"
@@ -191,6 +198,10 @@ function FrmMovement({ history }) {
           </form>
         )}
       </Formik>
+      <FrmProduct
+        open={isopenProductModal}
+        SetOpenModal={setOpenModal}
+      />
     </div>
   );
 }
