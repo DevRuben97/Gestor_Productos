@@ -21,8 +21,8 @@ export default function MovementDetails({
   const [initialValues, setInitialValues] = useState({
     Product_id: 0,
     Quantity: 0,
-    stock: 0,
-    price: 0,
+    Stock: 0,
+    Price: 0,
     product_name: "",
   });
   const [array, setArray] = useState([]);
@@ -53,12 +53,15 @@ export default function MovementDetails({
     );
     console.log(product_filter);
     if (product_filter.length > 0) {
-      message("El producto seleccionado ya se encuntra en la lista.", "warning");
+      message(
+        "El producto seleccionado ya se encuntra en la lista.",
+        "warning"
+      );
     } else {
       const object = {
-        price: numeral(SelectedProduct.Price).format(0, 0),
-        stock: SelectedProduct.Stock,
-        name: SelectedProduct.Name,
+        Price: numeral(SelectedProduct.Price).format(0, 0),
+        Stock: SelectedProduct.Stock,
+        product_name: SelectedProduct.Name,
         Quantity: value.Quantity,
         Product_id: SelectedProduct.Id,
         subTotal: numeral(SelectedProduct.Price).value() * value.Quantity,
@@ -181,20 +184,21 @@ export default function MovementDetails({
                     ]}
                     Body={array.map((item, index) => (
                       <tr key={index}>
-                        <th>{item.name}</th>
-                        <th>{item.price}</th>
-                        <th>{item.stock}</th>
+                        <th>{item.product_name}</th>
+                        <th>{item.Price}</th>
+                        <th>{item.Stock}</th>
                         <th>{item.Quantity}</th>
                         <th>{numeral(item.subTotal).format(0, 0)}</th>
                         <th>
-                          <a
+                          <button
+                            type="button"
                             className="btn btn-secondary"
                             href="#"
                             data-tip="Eliminar producto"
                             onClick={() => deleteProduct(index)}
                           >
                             <i class="fas fa-trash-alt"></i>
-                          </a>
+                          </button>
                         </th>
                       </tr>
                     ))}

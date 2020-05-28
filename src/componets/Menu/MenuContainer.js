@@ -1,6 +1,6 @@
 import React from "react";
 import {Routes} from "./MenuRoutes";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function MenuContainer(props) {
   return (

@@ -1,8 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 
-//Functions:
-import { GetProducts, DeleteProduct } from "../http/Products";
-
 //Libreries:
 import Swal from "sweetalert2";
 import Modal from "react-responsive-modal";
@@ -14,9 +11,12 @@ import "react-activity/dist/react-activity.css";
 import FrmProduct from "../componets/Products/FrmProduct";
 import ReactTooltip from "react-tooltip";
 
+//Functions:
+import { GetProducts, DeleteProduct } from "../http/Products";
+
 let numeral = require("numeral");
 
-const Products = pros => {
+const Products = (pros) => {
   const [Products, SetProducts] = useState([]);
   const [Filter, setFilter] = useState([]);
   const [ProductEditId, SetProductId] = useState(0);
@@ -42,8 +42,8 @@ const Products = pros => {
       text: `¿Quieres eliminar el producto ${Product.Name}?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Si, eliminalo"
-    }).then(async result => {
+      confirmButtonText: "Si, eliminalo",
+    }).then(async (result) => {
       if (result.value) {
         try {
           let DataResult = await DeleteProduct(Product.Id);
@@ -51,14 +51,14 @@ const Products = pros => {
             Swal.fire({
               title: "Eliminar Producto",
               text: "El Producto fue elimnado correctamente",
-              icon: "success"
+              icon: "success",
             });
             await ProductsList();
           } else {
             Swal.fire({
               title: "Eliminar Producto",
               text: "Ha ocurrido un error inesperado",
-              icon: "error"
+              icon: "error",
             });
           }
         } catch (error) {
@@ -74,7 +74,7 @@ const Products = pros => {
   }
 
   async function FilterProducts(ProductName) {
-    let products = Products.filter(x => x.Name.includes(ProductName));
+    let products = Products.filter((x) => x.Name.includes(ProductName));
     setFilter(products);
   }
 
@@ -99,7 +99,7 @@ const Products = pros => {
                 "Costo",
                 "Stock",
                 "Proveedor",
-                "Acciones"
+                "Acciones",
               ]}
               Body={Filter.map((item, index) => (
                 <tr key={index}>
@@ -141,7 +141,9 @@ const Products = pros => {
   return (
     <Fragment>
       <div className="container">
-        <h2 className="text-center"><i class="fas fa-warehouse"></i> Listado de Productos</h2>
+        <h2 className="text-center">
+          <i class="fas fa-warehouse"></i> Listado de Productos
+        </h2>
         <div className="row">
           <div className="col-md-9">
             <label>Buscar productos</label>
@@ -150,7 +152,7 @@ const Products = pros => {
               className="form-control"
               style={{ width: "50%" }}
               placeholder="Buscar por Nombre"
-              onChange={e => FilterProducts(e.target.value)}
+              onChange={(e) => FilterProducts(e.target.value)}
             ></input>
           </div>
           <div className="col-md-3">
