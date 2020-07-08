@@ -39,7 +39,7 @@ export default function MovementDetails({
       }
     }
     Fetch();
-  }, []);
+  }, [Details]);
 
   async function get_productInfo(id) {
     const { data } = await GetProductById(id);

@@ -20,5 +20,5 @@ export async function getMovementById(id){
 }
 
 export async function editMovement(data){
-    return await http.put('/',data);
+    return await http.put('/Movement',data);
 }
