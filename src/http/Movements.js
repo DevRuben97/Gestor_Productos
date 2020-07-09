@@ -22,3 +22,7 @@ export async function getMovementById(id){
 export async function editMovement(data){
     return await http.put('/Movement',data);
 }
+
+export async function WareHouseMovements(){
+    return await http.get('/Movement/WaraHouse/0')
+}

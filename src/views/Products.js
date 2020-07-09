@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from "react";
 
 //Libreries:
 import Swal from "sweetalert2";
-import Modal from "react-responsive-modal";
 
 //Componets:
 import Table from "../componets/Table";

@@ -20,6 +20,7 @@ export default function MovementDetails({
   OpenProductModal
 }) {
   const [initialValues, setInitialValues] = useState({
+    Id: 0,
     Product_id: 0,
     Quantity: 0,
     Stock: 0,
@@ -35,6 +36,7 @@ export default function MovementDetails({
       const { data } = await productsForSelect();
       setProductsSelect(data.Data);
       if (Details && Details.length > 0) {
+        console.log(Details);
         setArray(Details);
       }
     }

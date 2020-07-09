@@ -23,3 +23,11 @@ export async function DeleteProduct(id){
 export async function productsForSelect(){
     return await http.get('/Products/ForSelect/0');
 }
+
+export async function total_products(){
+    return await http.get('/Products/ProductsCount/0');
+}
+
+export async function totalWarehouse(){
+    return await http.get('Products/TotaltotalWarehouse/0');
+}
